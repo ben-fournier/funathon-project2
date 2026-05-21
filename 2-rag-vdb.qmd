@@ -1047,3 +1047,8 @@ In the `NaceDocument` class above, both decorators play complementary roles:
 This is a very common pattern in data pipelines: a lightweight container for the data + one or more classmethods to ingest it from external formats (CSV row, JSON, database record…).
 :::
 
+# Next step
+
+The vector database is ready. In the next notebook you will build the **generation** side of the RAG pipeline: given a free-text activity description, retrieve the most similar NACE codes from Qdrant and prompt an LLM to pick the right one.
+
+➡️ Continue with [**Part 2 — RAG: generation**](2-rag-generation.qmd)
