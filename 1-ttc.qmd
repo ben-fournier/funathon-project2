@@ -294,7 +294,7 @@ The process has three steps:
 
 The diagram below illustrates this pipeline on a short example:
 
-```mermaid
+```{mermaid}
 flowchart LR
     A["\"I sell croissants\""] -->|"split into tokens"| B["[\"i\", \"sell\", \"croi\", \"##ssants\"]"]
     B -->|"look up in vocabulary"| C["[45, 112, 87, 203]"]
@@ -391,7 +391,7 @@ Key training hyperparameters:
 ::: {.callout-tip collapse="false" icon=false}
 ## `<i class="bi bi-book"></i>`{=html} Exercice 4: Train the model
 
-`torchTextClassifiers` provides a high-level wrapper that combines the value encoder, tokenizer, model components, and training loop.
+`torchTextClassifiers` provides a high-level wrapper that combines the value encoder, tokenizer, model components, and training loop. You will do two things: create a model, and then train the model. It is important to distinguish these two steps clearly.
 
 ## Question 1 — Instantiate the classifier
 
