@@ -131,7 +131,7 @@ If you want to run code **interactively** in VS Code, instead of going through `
 
 ## Run code interactively (optional but recommended)
 
-For exploration, debugging, or quick experiments, the easiest workflow is to create your own scripts at the **root of the repository**. A useful pattern in VS Code is to use **cell markers** (`# %%`) inside a regular `.py` file: each `# %%` block becomes individually runnable, with outputs and plots rendered inline in the editor. It works like a notebook, but with the simplicity of a plain Python file.
+For exploration, debugging, or quick experiments, the easiest workflow is to create your own scripts at the **root of the repository**. A useful pattern in VS Code is to use **cell markers** (`# %%`) inside a regular `.py` file: each `# %%` block becomes individually runnable, with outputs and plots rendered inline in the editor. It works like a Jupyter notebook, but with the simplicity of a plain Python file.
 
 Example (`scratch.py` at the root of the repo):
 
@@ -152,7 +152,7 @@ df.head()
 df["code"].value_counts().head(10).plot(kind="bar")
 ```
 
-A small "Run Cell" lens appears above each `# %%` marker. Click it to execute that block. This is convenient for iterating on small pieces of code or testing specific functions from the project.
+A small "Run Cell" lens appears above each `# %%` marker. Click it to execute that block. You can also use the shortcut <kbd>Shift</kbd> + <kbd>Enter</kbd>. This is convenient for iterating on small pieces of code or testing specific functions from the project.
 
 ::: {.callout-tip}
 Files created at the root of the repository for your own exploration (such as `scratch.py` or `notes.md`) can be safely ignored from git by adding them to your local `.gitignore`, or to `.git/info/exclude` if you don't want to commit the ignore rule.
