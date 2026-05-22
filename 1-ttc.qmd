@@ -91,7 +91,7 @@ MLFLOW_TRACKING_USERNAME=<add your username>
 MLFLOW_TRACKING_PASSWORD=<add your password>
 ```
 
-The notebook loads this file automatically at startup with `load_dotenv()`, making the values available as environment variables without ever appearing in the code.
+The notebook loads this file automatically at startup with `load_dotenv()`, making the values available as environment variables without ever appearing in the code. Be careful: do not add spaces around the `=` sign, and do not put single quotes or double quotes. Example: `MLFLOW_TRACKING_USERNAME=DonaldDuck`.
 
 ---
 
