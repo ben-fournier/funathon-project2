@@ -33,35 +33,45 @@ n_classes = df["code"].n_unique()
 print(n_classes)
 
 # %%
+# ajout variable catégorielle
+
+df = df.with_columns([
+    pl.col("code").str.slice(0, 1).alias("code_1"),
+    pl.col("code").str.slice(0, 2).alias("code_12"),
+    pl.col("code").str.slice(3, 1).alias("code_3"),
+    pl.col("code").str.slice(2, 3).alias("code_34"),
+])
+
+# %%
 # split dataset
 
 from sklearn.model_selection import train_test_split
 
 target = "code"
 train_df, no_train_df = train_test_split(
-    df, 
-    train_size=0.70, 
-    random_state=11, 
+    df,
+    train_size=0.70,
+    random_state=11,
     stratify=df[target])
 valid_df, test_df = train_test_split(
-    no_train_df, 
-    train_size=0.50, 
-    random_state=11, 
+    no_train_df,
+    train_size=0.50,
+    random_state=11,
     stratify=no_train_df[target])
 
 # Train
-# X_train = train_df.drop(target)
-X_train = train_df["label"]
+X_train = train_df.drop(target)
+# X_train = train_df["label"]
 y_train = train_df[target]
 
 # Valid
-# X_valid = valid_df.drop(target)
-X_valid = valid_df["label"]
+X_valid = valid_df.drop(target)
+# X_valid = valid_df["label"]
 y_valid = valid_df[target]
 
 # Test
-# X_test = test_df.drop(target)
-X_test = test_df["label"]
+X_test = test_df.drop(target)
+# X_test = test_df["label"]
 y_test = test_df[target]
 
 
@@ -151,14 +161,15 @@ value_encoder = ValueEncoder(label_encoder=encoder)
 from torchTextClassifiers.tokenizers import WordPieceTokenizer
 
 tokenizer = WordPieceTokenizer(vocab_size=1000, output_dim=32)
-tokenizer.train(X_train)
+X_train_text = X_train["label"]
+tokenizer.train(X_train_text)
 
-print("Output tensor size:", tokenizer.tokenize(X_train[0]).input_ids.shape)
+print("Output tensor size:", tokenizer.tokenize(X_train_text[0]).input_ids.shape)
 print("Vocabulary size:", tokenizer.vocab_size)
 
 # %%
 # Look at an example of tokenization
-raw = list(X_train[0:9])
+raw = list(X_train_text[0:9])
 tok_ids = tokenizer.tokenize(raw).input_ids
 tokens = [tokenizer.tokenizer.convert_ids_to_tokens(tok_id) for tok_id in tok_ids]
 print("Raw text: ", raw)
@@ -168,3 +179,6 @@ for tok in tokens:
     print(tok)
 
 # %%
+# 
+
+X_train
