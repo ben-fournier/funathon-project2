@@ -79,3 +79,44 @@ print("Valid:", y_valid.value_counts(sort=True))
 print("Test :", y_test.value_counts(sort=True))
 
 # %%
+# verify split, all counts
+table = (
+    df[target].value_counts(sort=True)
+    .join(
+        y_train.value_counts(sort=True),
+        on=target, how="full", coalesce=True,
+        suffix="_train")
+    .join(
+        y_valid.value_counts(sort=True),
+        on=target, how="full", coalesce=True,
+        suffix="_valid")
+    .join(
+        y_test.value_counts(sort=True),
+        on=target, how="full", coalesce=True,
+        suffix="_test")
+)
+
+print(table)
+
+# %%
+# verify split, all frequencies
+table = (
+    df[target].value_counts(sort=True)
+    .join(
+        y_train.value_counts(normalize=True),
+        on=target, how="full", coalesce=True,
+        suffix="_train")
+    .join(
+        y_valid.value_counts(normalize=True),
+        on=target, how="full", coalesce=True,
+        suffix="_valid")
+    .join(
+        y_test.value_counts(normalize=True),
+        on=target, how="full", coalesce=True,
+        suffix="_test")
+    .sort(by="count",  descending=True)
+)
+
+print(table)
+
+# %%
