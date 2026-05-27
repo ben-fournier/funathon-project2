@@ -50,15 +50,18 @@ valid_df, test_df = train_test_split(
     stratify=no_train_df[target])
 
 # Train
-X_train = train_df.drop(target)
+# X_train = train_df.drop(target)
+X_train = train_df["label"]
 y_train = train_df[target]
 
 # Valid
-X_valid = valid_df.drop(target)
+# X_valid = valid_df.drop(target)
+X_valid = valid_df["label"]
 y_valid = valid_df[target]
 
 # Test
-X_test = test_df.drop(target)
+# X_test = test_df.drop(target)
+X_test = test_df["label"]
 y_test = test_df[target]
 
 
@@ -119,4 +122,50 @@ table = (
 
 print(table)
 
+# %%
+# check missing in train
+
+all_codes = set(df[target])
+train_codes = set(y_train)
+missing = all_codes - train_codes
+
+if missing:
+    print(f"WARNING: {len(missing)} code(s) missing from training set: {missing}")
+else:
+    print(f"OK — all {len(all_codes)} codes appear in the training set.")
+
+# %%
+# label encoder
+from sklearn.preprocessing import LabelEncoder
+
+encoder = LabelEncoder()
+encoder.fit(y_train.to_numpy())
+
+from torchTextClassifiers.value_encoder import ValueEncoder
+
+value_encoder = ValueEncoder(label_encoder=encoder)
+
+# %%
+# tokeniser v1
+
+from torchTextClassifiers.tokenizers import WordPieceTokenizer
+
+tokenizer = WordPieceTokenizer(vocab_size=5000, output_dim=10)
+tokenizer.train(X_train)
+
+print("Output tensor size:", tokenizer.tokenize(X_train[0]).input_ids.shape)
+print("Vocabulary size:", tokenizer.vocab_size)
+
+# Look at an example of tokenization
+print("Raw text", X_train[0])
+print(
+    "Tokens id:",
+    tokenizer.tokenize(X_train[0]).input_ids.squeeze(0)
+)
+print(
+    "Tokens:",
+    tokenizer.tokenizer.convert_ids_to_tokens(
+        tokenizer.tokenize(X_train[0]).input_ids.squeeze(0)
+    )
+)
 # %%
