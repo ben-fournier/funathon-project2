@@ -150,22 +150,18 @@ value_encoder = ValueEncoder(label_encoder=encoder)
 
 from torchTextClassifiers.tokenizers import WordPieceTokenizer
 
-tokenizer = WordPieceTokenizer(vocab_size=5000, output_dim=10)
+tokenizer = WordPieceTokenizer(vocab_size=50, output_dim=10)
 tokenizer.train(X_train)
 
 print("Output tensor size:", tokenizer.tokenize(X_train[0]).input_ids.shape)
 print("Vocabulary size:", tokenizer.vocab_size)
 
 # Look at an example of tokenization
-print("Raw text", X_train[0])
-print(
-    "Tokens id:",
-    tokenizer.tokenize(X_train[0]).input_ids.squeeze(0)
-)
-print(
-    "Tokens:",
-    tokenizer.tokenizer.convert_ids_to_tokens(
-        tokenizer.tokenize(X_train[0]).input_ids.squeeze(0)
-    )
-)
+raw = list(X_train[0:9])
+tk_ids = tokenizer.tokenize(raw).input_ids  #.squeeze(0)
+tokens = [tokenizer.tokenizer.convert_ids_to_tokens(tk_id) for tk_id in tk_ids]
+print("Raw text: ", raw)
+print("Tokens id:", tk_ids)
+print("Tokens:", tokens)
+
 # %%
