@@ -68,7 +68,10 @@ model_config = ModelConfig(
 )
 
 # 3. Train
-classifier = torchTextClassifiers(tokenizer=tokenizer, model_config=model_config)
+classifier = torchTextClassifiers(
+    tokenizer=tokenizer,
+    model_config=model_config
+)
 training_config = TrainingConfig(
     num_epochs=10,
     batch_size=32,
@@ -87,7 +90,7 @@ predictions = classifier.predict(np.array(texts))
 # %%
 
 # Configure model with categorical features
-model_config = ModelConfig(
+model_config_w_categor = ModelConfig(
     embedding_dim=128,
     num_classes=3,
     categorical_vocabulary_sizes=[10, 5],  # 10 categories, 5 brands
@@ -95,10 +98,28 @@ model_config = ModelConfig(
 )
 
 # Train
-classifier = torchTextClassifiers(tokenizer=tokenizer, model_config=model_config)
-classifier.train(
-    X_text=texts,
-    y=labels,
-    X_categorical=categorical,
-    training_config=training_config
+classifier_w_categor = torchTextClassifiers(
+    tokenizer=tokenizer,
+    model_config=model_config_w_categor
 )
+training_config_w_categor = TrainingConfig(
+    num_epochs=10,
+    batch_size=32,
+    lr=1e-3,
+    raw_labels=False,
+    raw_categorical_inputs=False,
+)
+classifier_w_categor.train(
+    X_train=np.column_stack([texts, categorical]),
+    y_train=np.array(labels),
+    training_config=training_config_w_categor
+)
+# classifier_w_categor.train(
+#     X_text=texts,
+#     y=labels,
+#     X_categorical=categorical,
+#     training_config=training_config
+# )
+
+
+# %%
