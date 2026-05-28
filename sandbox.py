@@ -220,9 +220,37 @@ model_config = ModelConfig(
     categorical_embedding_dims=categorical_embedding_dim,
 )
 
+# build encoders
+from sklearn.preprocessing import LabelEncoder
+
+label_encoder = LabelEncoder().fit(y_train.to_numpy())
+
+cat_encoders = {
+    cat: LabelEncoder().fit(
+        X_train.get_column(cat)
+    )
+    for cat in categorical
+}
+
+mappings = {
+    cat: {
+        str(k): int(v)
+        for k, v in zip(enc.classes_, enc.transform(enc.classes_))
+    }
+    for cat, enc in cat_encoders.items()
+}
+print(mappings)
+
+
+value_encoders = ValueEncoder(
+    label_encoder=label_encoder,
+    categorical_encoders=cat_encoders
+)
+
 classifier = torchTextClassifiers(
     tokenizer=tokenizer,
-    model_config=model_config
+    model_config=model_config,
+    value_encoder=value_encoders,
 )
 
 # %%
@@ -234,11 +262,19 @@ training_config = TrainingConfig(
     lr=1e-3
 )
 
+# classifier.train(
+#     X_text=X_train[text],
+#     y=y_train,
+#     X_categorical=X_train[categorical],
+#     training_config=training_config
+# )
+
 classifier.train(
-    X_text=X_train[text],
-    y=y_train,
-    X_categorical=X_train[categorical],
+    X_train=X_train.select([text] + categorical).to_numpy(),
+    y_train=y_train.to_numpy(),
     training_config=training_config
 )
 
 predictions = classifier.predict(X_test[text])
+
+# %%
