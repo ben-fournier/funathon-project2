@@ -24,12 +24,14 @@ print(len(df))
 # %%
 # classes à prédire
 
+target = "code"
+
 # classes les plus courantes
-classes_top10 = df["code"].value_counts(sort=True).head(10)
+classes_top10 = df[target].value_counts(sort=True).head(10)
 print(classes_top10)
 
 # nombre de classes
-n_classes = df["code"].n_unique()
+n_classes = df[target].n_unique()
 print(n_classes)
 
 # %%
@@ -47,7 +49,6 @@ df = df.with_columns([
 
 from sklearn.model_selection import train_test_split
 
-target = "code"
 train_df, no_train_df = train_test_split(
     df,
     train_size=0.70,
@@ -179,6 +180,65 @@ for tok in tokens:
     print(tok)
 
 # %%
-# 
+# model: text + categorical
+
+from torchTextClassifiers import torchTextClassifiers, ModelConfig, TrainingConfig
 
 X_train
+
+# Text + categorical data
+text = "label"
+embedding_dim = 128
+
+# Choosing Embedding Dimension
+# Task Complexity - Data Size
+# Recommended embedding_dim
+
+# Simple (binary) < 1K samples
+# 32-64
+
+# Medium (3-5 classes) 1K-10K samples
+# 64-128
+
+# Complex (10+ classes) 10K-100K samples
+# 128-256
+
+# Very complex > 100K samples
+# 256-512
+
+# Configure model with categorical features
+
+categorical = ["code_1", "code_12"]
+
+categorical_vocab_size = [X_train[col].n_unique() for col in categorical]
+categorical_embedding_dim = [min(voc_size // 2, 50) for voc_size in categorical_vocab_size]
+
+model_config = ModelConfig(
+    embedding_dim=embedding_dim,
+    num_classes=n_classes,  # df[target].n_unique()
+    categorical_vocabulary_sizes=categorical_vocab_size,
+    categorical_embedding_dims=categorical_embedding_dim,
+)
+
+classifier = torchTextClassifiers(
+    tokenizer=tokenizer,
+    model_config=model_config
+)
+
+# %%
+# Train
+
+training_config = TrainingConfig(
+    num_epochs=10,
+    batch_size=32,
+    lr=1e-3
+)
+
+classifier.train(
+    X_text=X_train[text],
+    y=y_train,
+    X_categorical=X_train[categorical],
+    training_config=training_config
+)
+
+predictions = classifier.predict(X_test[text])
