@@ -81,7 +81,7 @@ Build a **retrieval-augmented generation** (RAG) system that combines a vector d
 
 Before diving into either part, follow these steps to set up your environment. The same setup applies to both parts.
 
-If you need more details for setups, do not hesitate to visite [project 1 introduction page](https://aiml4os.github.io/funathon-project1/).
+If you need more details for setups, do not hesitate to visite [project 1 introduction page](https://aiml4os.github.io/funathon-project1/) and/or watch the 2026's Funathon [Onboarding replay](https://aiml4os.github.io/funathon-general-website/onboarding.html).
 
 ## Fork this repository
 
@@ -153,9 +153,5 @@ df["code"].value_counts().head(10).plot(kind="bar")
 ```
 
 A small "Run Cell" lens appears above each `# %%` marker. Click it to execute that block. You can also use the shortcut <kbd>Shift</kbd> + <kbd>Enter</kbd>. This is convenient for iterating on small pieces of code or testing specific functions from the project.
-
-::: {.callout-tip}
-Files created at the root of the repository for your own exploration (such as `scratch.py` or `notes.md`) can be safely ignored from git by adding them to your local `.gitignore`, or to `.git/info/exclude` if you don't want to commit the ignore rule.
-:::
 
 You're now ready to start. Head to [Part 1](1-ttc.qmd) or [Part 2](2-rag-intro.qmd).

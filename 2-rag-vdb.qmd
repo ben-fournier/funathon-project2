@@ -496,7 +496,7 @@ response = client_llmlab.embeddings.create(
 )
 ```
 
-The returned `response` object follows the OpenAI schema — the embedding vector itself lives inside `response.data[...]`. Browse the object (or check the [OpenAI docs](https://platform.openai.com/docs/api-reference/embeddings/create)) to find where exactly.
+The returned `response` object follows the OpenAI schema — the embedding vector itself lives inside `response.data[...]`. Browse the object (or check the [OpenAI docs](https://developers.openai.com/api/reference/python/resources/embeddings/methods/create)) to find where exactly.
 
 💡 *Tips:*
 
